@@ -7,7 +7,6 @@ import {
 
 // import logo from './logo.svg';
 import './stylesheets/App.css';
-import QuestionView from './components/QuestionView';
 import Header from './components/Header';
 import QuizView from './components/QuizView';
 import Points from './components/Points';

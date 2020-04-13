@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import '../stylesheets/App.css';
+import '../stylesheets/Points.css';
 import Points from './Points';
 import $ from 'jquery';
 
@@ -147,7 +148,7 @@ class PointsView extends Component {
 
         <div className="question-view">
         
-      <div id="add-points">
+      <div className="categories-list" id="add-points">
         <h2>Add a Happy or Sad Face</h2>
         <div>
             <img src="https://img.icons8.com/android/24/000000/plus.png" alt="" className="delete" onClick={() => this.props.questionAction('DELETE')}/>
@@ -165,7 +166,7 @@ class PointsView extends Component {
       
       
         <div className="questions-list">
-          <h2>Points this week</h2>
+          <h2 class="points">Points this week</h2>
           {this.state.points.map((p, ind) => (
             <Points
               key={p.id}
