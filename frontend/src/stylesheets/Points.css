@@ -1,0 +1,25 @@
+#add-points {
+  text-align: center;
+}
+
+img.points {
+  width: 90px;
+}
+
+img.small {
+  width: 30px;
+}
+
+.Points-status {
+  display: flex;
+  height: 30px;
+  width: 200px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+span.points {  
+  width: 20%;
+  align-items: center;   
+  justify-content: space-between;  
+}
