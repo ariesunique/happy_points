@@ -2,49 +2,64 @@
   text-align: center;
 }
 
-img.points {
+#score {
+    color: #f30b70;
+    height: 150px;
+    font-weight: bold;
+    background: #fccee2;
+}
+
+.point-item {
+  text-align: left;
+}
+
+img.medium {
   width: 90px;
+  vertical-align: middle;
 }
 
 img.small {
   width: 30px;
+  vertical-align: middle;
 }
 
-h2.points {
+h2.points-header {
     text-align: left;
     padding-left: 20px
 }
 
-.Points-status {
-  display: flex;
-  height: 30px;
-  width: 200px;
-  align-items: center;
-  justify-content: space-between;
-}
-
 span.points {  
-  width: 20%;
+  width: 15%;
   align-items: center;   
-  justify-content: space-between;  
+  display: inline-block;  
 }
 
-.question-view {
+span.notes {  
+  display: inline-block;  
+  vertical-align: middle;
+}
+
+.Points-form-list-container {
   display: flex;
   flex-direction: row;
 }
 
-.categories-list {
+.Points-form {
   flex-basis: 40%;
   flex-shrink: 2;
 }
 
-.questions-list {
+.Points-form-row {
+    display: inline-block;
+    height: 120px;
+}
+
+.Points-list {
   flex-basis: 60%;
   text-align: center;
 }
 
-.Question-holder {
+.Points-holder {
   padding: 10px 20px;
   border: 2px black solid;
   text-align: left;

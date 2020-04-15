@@ -52,15 +52,23 @@ class Points extends Component {
   }
 
   render() {
-    const { numHappy, numSad, date } = this.props;  
+    const { numHappy, numSad, date, notes } = this.props;
+    const listItems = notes.map((item) =>
+      <li className="point-item">{item}</li>
+    );
     return (
-        <div className="Question-holder">
-        <span class="Points-status">
-        <label>{date}</label>
-        &nbsp;
-        <label>{numHappy} <img className="small" alt="" src="happy-face.png"/></label>
-        &nbsp;
-        <label>{numSad} <img className="small" alt="" src="sad-face.png"/></label>
+        <div className="Points-holder">
+        <span className="points">{date}</span>
+        <span className="points">
+            {numHappy} <img className="small" alt="" src="happy-face.png"/>
+        </span>
+        <span className="points">
+            {numSad} <img className="small" alt="" src="sad-face.png"/>
+        </span>      
+        <span className="notes">
+            <ul>
+                {listItems}              
+            </ul>
         </span>
         </div>
     );

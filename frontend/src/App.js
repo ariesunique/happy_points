@@ -8,8 +8,6 @@ import {
 // import logo from './logo.svg';
 import './stylesheets/App.css';
 import Header from './components/Header';
-import QuizView from './components/QuizView';
-import Points from './components/Points';
 import PointsView from './components/PointsView';
 
 
@@ -21,14 +19,10 @@ class App extends Component {
       <Router>
         <Switch>
           <Route path="/" exact component={PointsView} />
-          <Route path="/list" exact component={PointsView} />
-          <Route path="/add" component={Points} />
-          <Route path="/play" component={QuizView} />
         </Switch>
       </Router>
     </div>
-  );
-
+    );
   }
 }
 
