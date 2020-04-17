@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import '../stylesheets/App.css';
 import '../stylesheets/Points.css';
 import Points from './Points';
-import $ from 'jquery';
+//import $ from 'jquery';
 
 class PointsView extends Component {
   constructor(){
@@ -26,6 +26,8 @@ class PointsView extends Component {
           currentDate: "04-13-20",
           totalEntries: 3,
           totalPoints: 10,
+          happy: 0,
+          sad: 0,
           points: [{
               date: "04-01-20",
               numHappy: 5,
@@ -69,23 +71,37 @@ class PointsView extends Component {
     return pageNumbers;
   }
 
-  questionAction = (id) => (action) => {
-    if(action === 'DELETE') {
-      if(window.confirm('are you sure you want to delete the question?')) {
-        $.ajax({
-          url: `/questions/${id}`, //TODO: update request URL
-          type: "DELETE",
-          success: (result) => {
-            this.getQuestions();
-          },
-          error: (error) => {
-            alert('Unable to load questions. Please try your request again')
-            return;
-          }
-        })
-      }
+    onClickHappyPlus = () => {
+        if (this.state.happy < 3) {
+            this.setState({
+                happy: this.state.happy + 1
+            })
+        }
     }
-  }
+
+    onClickHappyMinus = () => {
+        if (this.state.happy > 0) {
+            this.setState({
+                happy: this.state.happy - 1
+            })
+        }
+    }
+
+    onClickSadPlus = () => {
+        if (this.state.sad < 3) {
+            this.setState({
+                sad: this.state.sad + 1
+            })
+        }
+    }
+
+    onClickSadMinus = () => {
+        if (this.state.sad > 0) {
+            this.setState({
+                sad: this.state.sad - 1
+            })
+        }
+    }
 
   render() {
     return (
@@ -93,28 +109,30 @@ class PointsView extends Component {
               <div className="Points-form" id="add-points">
                 <h2>Add a Happy or Sad Face</h2>
                 <div className="Points-form-row">
-                    <img src="https://img.icons8.com/android/24/000000/plus.png" alt="" className="small" onClick={() => this.props.questionAction('DELETE')}/>
+                    <img src="https://img.icons8.com/android/24/000000/plus.png" alt="" className="small" onClick={this.onClickHappyPlus}/>
                     <img src="happy-face.png" alt="" className="medium"/>
-                    <img src="https://img.icons8.com/android/24/000000/minus.png" alt="" className="small" onClick={() => this.props.questionAction('DELETE')}/>
+                    <img src="https://img.icons8.com/android/24/000000/minus.png" alt="" className="small" onClick={this.onClickHappyMinus}/>
                 </div>
                 <br/>
                 <div className="Points-form-row">
-                    <img src="https://img.icons8.com/android/24/000000/plus.png" alt="" className="small" onClick={() => this.props.questionAction('DELETE')}/>
+                    <img src="https://img.icons8.com/android/24/000000/plus.png" alt="" className="small" onClick={this.onClickSadPlus}/>
                     <img src="sad-face.png" alt="" className="medium" />
-                    <img src="https://img.icons8.com/android/24/000000/minus.png" alt="" className="small" onClick={() => this.props.questionAction('DELETE')}/>
+                    <img src="https://img.icons8.com/android/24/000000/minus.png" alt="" className="small" onClick={this.onClickSadMinus}/>
                 </div>
-              <form onSubmit={this.handleSubmit}>
-                  <label>Happy Faces:  <input placeholder="0" disabled="disabled" /></label>
-                  <label>Sad Faces: <input placeholder="0" disabled="disabled" /></label>
-                  <label>
+              <form className="happyface-form" onSubmit={this.handleSubmit}>
+                    
+                  <div><span className="formtext">Happy:</span><input class="forminput" id="happy-input" name="happy-input" placeholder={this.state.happy}  /></div>
+                  <div><span className="formtext">Sad:</span><input class="forminput" id="sad-input" name="sad-input" placeholder={this.state.sad}  /></div>
+                  <div><span className="formtext">
                   Notes:
-                  <textarea value={this.state.value} onChange={this.handleChange} />
-                </label>
-                <input type="submit" value="Submit" />
+                  </span>
+                  <textarea name="notes-input" value={this.state.value} onChange={this.handleChange} />
+                  </div>
+                    <div class="newline"><input class="button" type="submit" value="Submit" /></div>
               </form>
               </div>         
             <div className="Points-list">
-              <h2 class="points-header">Points this week: <label id="score">{this.state.totalPoints}</label></h2>
+              <h2 class="points-header">Points this week: <label class="score">{this.state.totalPoints}</label></h2>
               {this.state.points.map((p, ind) => (
                 <Points
                   key={p.id}

@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-#score {
+.score {
     color: #f30b70;
     height: 150px;
     font-weight: bold;
@@ -37,6 +37,7 @@ span.points {
 span.notes {  
   display: inline-block;  
   vertical-align: middle;
+  width: 40%;  
 }
 
 .Points-form-list-container {
@@ -64,4 +65,47 @@ span.notes {
   border: 2px black solid;
   text-align: left;
   margin: 7px;
+}
+
+.button {
+    width: 100px;
+    margin-top: 5px;
+    background-color: dodgerblue;
+    color: white;
+    padding: 3px 5px;
+    align-self: center;
+}
+
+.happyface-form {
+    display: flex, inline-block;
+    flex-direction: row;    
+    text-align: center;
+    height: 50px;
+    
+}
+
+.formtext {
+  padding: 5px 10px;
+  width: 45px;
+  text-self: right;    
+  vertical-align: middle;
+  
+}
+
+.forminput {
+  padding: 0px 10px;
+  width: 15px;
+  align-self: right;    
+  vertical-align: middle;
+}
+
+textarea {
+  height:100px;
+}
+
+.newline {
+    position: relative;
+    top      : 125px;
+    left     : -150px;        
+    
 }

@@ -70,6 +70,9 @@ class Points extends Component {
                 {listItems}              
             </ul>
         </span>
+        <span className="points">
+            <label class="score">{numHappy - numSad}</label>
+        </span>
         </div>
     );
   }
