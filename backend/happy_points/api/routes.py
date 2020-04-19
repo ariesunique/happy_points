@@ -1,4 +1,4 @@
-from happy_points import app
+from happy_points.api.models import Point
 from flask import Blueprint
 
 blueprint = Blueprint("api", __name__)
@@ -9,8 +9,8 @@ def hello_world():
 
 @blueprint.route("/points")
 def get_points():
-    pass
+    return "get  points"
 
-@blueprint.route("/points", method="POST")
+@blueprint.route("/points", methods=["POST"])
 def add_points():
-    pass
+    return "add points"
