@@ -11,4 +11,4 @@ class Point(db.Model):
     notes = db.Column(db.String(300))
     
     def __repr__(self):
-        return f"<Point({self.id}) added {self.timetamp}>"
+        return f"<Point({self.id}) added {self.timestamp}>"
