@@ -1,6 +1,8 @@
 from environs import Env
 import os
-basedir = os.path.abspath(os.path.dirname(__file__))
+
+cwd = os.path.dirname(__file__)
+basedir = os.path.abspath(os.path.join(cwd, os.pardir))
 
 env = Env()
 env.read_env()
