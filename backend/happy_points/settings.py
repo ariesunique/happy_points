@@ -2,7 +2,7 @@ from environs import Env
 import os
 
 cwd = os.path.dirname(__file__)
-basedir = os.path.abspath(os.path.join(cwd, os.pardir))
+basedir = os.path.abspath(cwd)
 
 env = Env()
 env.read_env()
