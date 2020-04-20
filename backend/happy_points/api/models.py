@@ -31,7 +31,7 @@ class Point(db.Model):
             "numSad": self.sad,
             "totalPoints": self.total,
             "date": self.timestamp,
-            "notes": self.notes
+            "notes": self.notes.split(";")
                }
     
     

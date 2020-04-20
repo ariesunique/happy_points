@@ -52,9 +52,9 @@ class Points extends Component {
   }
 
   render() {
-    const { numHappy, numSad, date, notes } = this.props;
+    const { numHappy, numSad, date, notes, totalPoints } = this.props;
     const listItems = notes.map((item) =>
-      <li className="point-item">{item}</li>
+      <li className="point-item" key={item}>{item}</li>
     );
     return (
         <div className="Points-holder">
@@ -71,7 +71,7 @@ class Points extends Component {
             </ul>
         </span>
         <span className="points">
-            <label class="score">{numHappy - numSad}</label>
+            <label className="score">{totalPoints}</label>
         </span>
         </div>
     );

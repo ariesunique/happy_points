@@ -1,5 +1,6 @@
 from happy_points.api.models import Point
 from flask import Blueprint, jsonify
+from datetime import datetime
 
 blueprint = Blueprint("api", __name__)
 
@@ -10,8 +11,9 @@ def hello_world():
 @blueprint.route("/points")
 def get_points():
     points = [ point.to_dict() for point in Point.query.all() ]
-    print(points)
     return jsonify({"success": True,
+                    "currentDate": datetime.now(),
+                    "totalEntries": len(points),
                     "points": points
                    })
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import '../stylesheets/App.css';
 import '../stylesheets/Points.css';
 import Points from './Points';
-//import $ from 'jquery';
+import $ from 'jquery';
 
 class PointsView extends Component {
   constructor(){
@@ -13,7 +13,9 @@ class PointsView extends Component {
       points: [],  
       page: 1,
       totalEntries: 0,
-      totalPoints: 0  
+      totalPoints: 0,
+      addHappy: 0,
+      addSad: 0  
     }
   }
 
@@ -21,37 +23,60 @@ class PointsView extends Component {
     this.getPoints();
   }
     
+//   getPoints = () => {
+//       this.setState({
+//           currentDate: "04-13-20",
+//           totalEntries: 3,
+//           totalPoints: 10,
+//           happy: 0,
+//           sad: 0,
+//           points: [{
+//               date: "04-01-20",
+//               numHappy: 5,
+//               numSad: 3,
+//               totalPoints: 2,
+//               notes: [ "talking back", "being rude"]
+//               },
+//           {
+//               date: "04-02-20",
+//               numHappy: 5,
+//               numSad: 0,
+//               totalPoints: 5,
+//               notes: ["excellent work"]
+//           },
+//            {
+//               date: "04-03-20",
+//               numHappy: 4,
+//               numSad: 1,
+//               totalPoints: 3,
+//               notes: ["listening the first time", "being a good helper"]
+//           }        
+//           ]
+//       })
+//   }
+  
   getPoints = () => {
-      this.setState({
-          currentDate: "04-13-20",
-          totalEntries: 3,
-          totalPoints: 10,
-          happy: 0,
-          sad: 0,
-          points: [{
-              date: "04-01-20",
-              numHappy: 5,
-              numSad: 3,
-              totalPoints: 2,
-              notes: [ "talking back", "being rude"]
-              },
-          {
-              date: "04-02-20",
-              numHappy: 5,
-              numSad: 0,
-              totalPoints: 5,
-              notes: ["excellent work"]
-          },
-           {
-              date: "04-03-20",
-              numHappy: 4,
-              numSad: 1,
-              totalPoints: 3,
-              notes: ["listening the first time", "being a good helper"]
-          }        
-          ]
-      })
-  }
+    $.ajax({
+      url: `/points?page=${this.state.page}`, 
+      type: "GET",
+      success: (result) => {
+        this.setState({
+          currentDate: result.currentDate,
+          totalEntries: result.totalEntries,
+          totalPoints: result.totalPoints,
+          happy: result.numHappy,
+          sad: result.numSad,
+          points: result.points,
+        })
+        return;
+      },
+      error: (error) => {
+        alert('Unable to load points. Please try your request again')
+        return;
+      }
+    })
+  }  
+  
   
   selectPage(num) {
     this.setState({page: num}, () => this.getPoints());
@@ -72,33 +97,33 @@ class PointsView extends Component {
   }
 
     onClickHappyPlus = () => {
-        if (this.state.happy < 3) {
+        if (this.state.addHappy < 3) {
             this.setState({
-                happy: this.state.happy + 1
+                addHappy: this.state.addHappy + 1
             })
         }
     }
 
     onClickHappyMinus = () => {
-        if (this.state.happy > 0) {
+        if (this.state.addHappy > 0) {
             this.setState({
-                happy: this.state.happy - 1
+                addHappy: this.state.addHappy - 1
             })
         }
     }
 
     onClickSadPlus = () => {
-        if (this.state.sad < 3) {
+        if (this.state.addSad < 3) {
             this.setState({
-                sad: this.state.sad + 1
+                addSad: this.state.addSad + 1
             })
         }
     }
 
     onClickSadMinus = () => {
-        if (this.state.sad > 0) {
+        if (this.state.addSad > 0) {
             this.setState({
-                sad: this.state.sad - 1
+                addSad: this.state.addSad - 1
             })
         }
     }
@@ -121,18 +146,18 @@ class PointsView extends Component {
                 </div>
               <form className="happyface-form" onSubmit={this.handleSubmit}>
                     
-                  <div><span className="formtext">Happy:</span><input class="forminput" id="happy-input" name="happy-input" placeholder={this.state.happy}  /></div>
-                  <div><span className="formtext">Sad:</span><input class="forminput" id="sad-input" name="sad-input" placeholder={this.state.sad}  /></div>
+                  <div><span className="formtext">Happy:</span><input className="forminput" id="happy-input" name="happy-input" placeholder={this.state.addHappy}  /></div>
+                  <div><span className="formtext">Sad:</span><input className="forminput" id="sad-input" name="sad-input" placeholder={this.state.addSad}  /></div>
                   <div><span className="formtext">
                   Notes:
                   </span>
                   <textarea name="notes-input" value={this.state.value} onChange={this.handleChange} />
                   </div>
-                    <div class="newline"><input class="button" type="submit" value="Submit" /></div>
+                    <div className="newline"><input className="button" type="submit" value="Submit" /></div>
               </form>
               </div>         
             <div className="Points-list">
-              <h2 class="points-header">Points this week: <label class="score">{this.state.totalPoints}</label></h2>
+              <h2 className="points-header">Points this week: <label className="score">{this.state.totalPoints}</label></h2>
               {this.state.points.map((p, ind) => (
                 <Points
                   key={p.id}
@@ -140,6 +165,7 @@ class PointsView extends Component {
                   numSad={p.numSad}
                   date={p.date}
                   notes={p.notes}
+                  totalPoints={p.totalPoints}
                 />
               ))}
               <div className="pagination-menu">
