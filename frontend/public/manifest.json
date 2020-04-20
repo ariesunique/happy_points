@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Happy Points",
+  "name": "Happy Points Student Rewards App",
   "icons": [
     {
       "src": "%PUBLIC_URL%/happy-face.png",
