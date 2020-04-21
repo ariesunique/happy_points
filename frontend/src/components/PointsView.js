@@ -15,7 +15,8 @@ class PointsView extends Component {
       totalEntries: 0,
       totalPoints: 0,
       addHappy: 0,
-      addSad: 0  
+      addSad: 0,
+      perpage: 0  
     }
   }
 
@@ -84,7 +85,7 @@ class PointsView extends Component {
 
   createPagination(){
     let pageNumbers = [];
-    let maxPage = Math.ceil(this.state.totalEntries / 10)
+    let maxPage = Math.ceil(this.state.totalEntries / this.state.perpage)
     for (let i = 1; i <= maxPage; i++) {
       pageNumbers.push(
         <span
