@@ -1,5 +1,10 @@
+from flask import current_app
 from happy_points import db
 from datetime import datetime
+import moment
+
+
+
 
 class Point(db.Model):
     __tablename__ = "point"
@@ -25,12 +30,13 @@ class Point(db.Model):
         return f"<Point({self.id}) added {self.timestamp}; happy: {self.happy}; sad: {self.sad}; total: {self.total}; notes: {self.notes}>"
     
     def to_dict(self):
+        DATE_FORMAT = current_app.config["DATE_FORMAT"]
         return {
             "id": self.id,
             "numHappy": self.happy,
             "numSad": self.sad,
             "totalPoints": self.total,
-            "date": self.timestamp,
+            "date": moment.date(self.timestamp).format(DATE_FORMAT),
             "notes": self.notes.split(";")
                }
     
