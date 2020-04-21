@@ -29,7 +29,13 @@ h2.points-header {
 }
 
 span.points {  
-  width: 15%;
+  width: 30%;
+  align-items: center;   
+  display: inline-block;  
+}
+
+span.narrow {  
+  width: 10%;
   align-items: center;   
   display: inline-block;  
 }

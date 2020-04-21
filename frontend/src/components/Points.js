@@ -59,10 +59,10 @@ class Points extends Component {
     return (
         <div className="Points-holder">
         <span className="points">{date}</span>
-        <span className="points">
+        <span className="narrow">
             {numHappy} <img className="small" alt="" src="happy-face.png"/>
         </span>
-        <span className="points">
+        <span className="narrow">
             {numSad} <img className="small" alt="" src="sad-face.png"/>
         </span>      
         <span className="notes">
@@ -70,7 +70,7 @@ class Points extends Component {
                 {listItems}              
             </ul>
         </span>
-        <span className="points">
+        <span className="narrow">
             <label className="score">{totalPoints}</label>
         </span>
         </div>
