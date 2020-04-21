@@ -12,49 +12,18 @@ class PointsView extends Component {
       currentDate: "",  
       points: [],  
       page: 1,
-      totalEntries: 0,
       totalPoints: 0,
       addHappy: 0,
       addSad: 0,
-      perpage: 0  
+      hasNext: false,
+      addNotes: ""  
     }
   }
 
   componentDidMount() {
     this.getPoints();
   }
-    
-//   getPoints = () => {
-//       this.setState({
-//           currentDate: "04-13-20",
-//           totalEntries: 3,
-//           totalPoints: 10,
-//           happy: 0,
-//           sad: 0,
-//           points: [{
-//               date: "04-01-20",
-//               numHappy: 5,
-//               numSad: 3,
-//               totalPoints: 2,
-//               notes: [ "talking back", "being rude"]
-//               },
-//           {
-//               date: "04-02-20",
-//               numHappy: 5,
-//               numSad: 0,
-//               totalPoints: 5,
-//               notes: ["excellent work"]
-//           },
-//            {
-//               date: "04-03-20",
-//               numHappy: 4,
-//               numSad: 1,
-//               totalPoints: 3,
-//               notes: ["listening the first time", "being a good helper"]
-//           }        
-//           ]
-//       })
-//   }
+  
   
   getPoints = () => {
     $.ajax({
@@ -67,7 +36,8 @@ class PointsView extends Component {
           totalPoints: result.totalPoints,
           happy: result.numHappy,
           sad: result.numSad,
-          points: result.points,
+          points: result.points,  
+          hasNext: result.meta.next_page  
         })
         return;
       },
@@ -96,6 +66,28 @@ class PointsView extends Component {
     }
     return pageNumbers;
   }
+
+    myPagination() {
+        let pageNumbers = [];
+        let currpage = this.state.page;
+        if (currpage > 1) {
+            pageNumbers.push(
+                <span
+                  key='prev'
+                  onClick={() => {this.selectPage(currpage-1)}}> prev
+                </span>            
+            )
+        }
+        if (this.state.hasNext) {
+            pageNumbers.push(
+                <span
+                  key='next'
+                  onClick={() => {this.selectPage(currpage+1)}}> next
+                </span>            
+            )
+        }
+        return pageNumbers;
+    }
 
     onClickHappyPlus = () => {
         if (this.state.addHappy < 3) {
@@ -129,6 +121,39 @@ class PointsView extends Component {
         }
     }
 
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    $.ajax({
+      url: '/points', 
+      type: "POST",
+      dataType: 'json', 
+      contentType: 'application/json',
+      data: JSON.stringify({
+        happy: this.state.addHappy,
+        sad: this.state.addSad,
+        notes: document.getElementById("notes-input").value
+      }),
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
+      success: (result) => {
+         
+        this.setState({addHappy:0, addSad:0})
+        document.getElementById("happyface-form").reset();
+        this.getPoints();
+        return;
+      },
+      error: (error) => {
+        alert('Unable to update points. Please try your request again')
+        return;
+      }
+    })
+  }
+
+
   render() {
     return (
         <div className="Points-form-list-container">        
@@ -145,14 +170,14 @@ class PointsView extends Component {
                     <img src="sad-face.png" alt="" className="medium" />
                     <img src="https://img.icons8.com/android/24/000000/minus.png" alt="" className="small" onClick={this.onClickSadMinus}/>
                 </div>
-              <form className="happyface-form" onSubmit={this.handleSubmit}>
+              <form id="happyface-form" className="happyface-form" onSubmit={this.handleSubmit}>
                     
                   <div><span className="formtext">Happy:</span><input className="forminput" id="happy-input" name="happy-input" placeholder={this.state.addHappy}  /></div>
                   <div><span className="formtext">Sad:</span><input className="forminput" id="sad-input" name="sad-input" placeholder={this.state.addSad}  /></div>
                   <div><span className="formtext">
                   Notes:
                   </span>
-                  <textarea name="notes-input" value={this.state.value} onChange={this.handleChange} />
+                  <textarea id="notes-input" name="notes-input" value={this.state.value} onChange={this.handleChange} />
                   </div>
                     <div className="newline"><input className="button" type="submit" value="Submit" /></div>
               </form>
@@ -170,7 +195,7 @@ class PointsView extends Component {
                 />
               ))}
               <div className="pagination-menu">
-                {this.createPagination()}
+                {this.myPagination()}
               </div>
             </div>
       </div>
