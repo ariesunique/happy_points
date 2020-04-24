@@ -37,7 +37,7 @@ def get_points():
         "next_page": f"{request.url}?page={page+1}" if earliest_entry.timestamp < start_date.date else ""
     }
     return jsonify({"success": True,
-                    "currentDate": moment.utcnow().format(DATE_FORMAT),
+                    "currentDate": moment.now().format(DATE_FORMAT),
                     "totalPoints": sum( point.get("totalPoints") for point in points ),
                     "points": points,
                     "meta": meta
@@ -51,8 +51,8 @@ def add_points():
     notes_val = request.get_json().get("notes")    
     
     # get the entry for the current date and update it
-    start = moment.utcnow().zero.date
-    end = moment.utcnow().replace(hours=23, minutes=59, seconds=59).date
+    start = moment.now().zero.date
+    end = moment.now().replace(hours=23, minutes=59, seconds=59).date
     todays_point = Point.query.filter(Point.timestamp.between(start, end)).first()
     
     if todays_point:

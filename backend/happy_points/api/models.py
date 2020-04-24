@@ -12,7 +12,7 @@ class Point(db.Model):
     happy = db.Column(db.Integer, default=0)
     sad = db.Column(db.Integer, default=0)
     total = db.Column(db.Integer, default=0)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     notes = db.Column(db.String(300))
     
     
