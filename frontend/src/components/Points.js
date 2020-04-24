@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 
 import '../stylesheets/Points.css';
 
@@ -15,10 +14,6 @@ class Points extends Component {
     }
   }
 
-
-  handleChange = (event) => {
-    this.setState({[event.target.name]: event.target.value})
-  }
 
   render() {
     const { numHappy, numSad, date, notes, totalPoints } = this.props;
