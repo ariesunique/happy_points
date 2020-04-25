@@ -6,10 +6,10 @@ The front-end is written in React (javascript) and the backend is written as a F
 
 - [Installation](#installation)
   * [Prerequisites](#prerequisites)
-  * [Setting up Happy Points](#setting-up-happy-points)
+  * [Install Happy Points](#install-happy-points)
+  * [Managing settings](#managing-settings)
 - [Run the Application](#run-the-application)
 - [Testing](#testing)
-
 
 ## Installation
 
@@ -53,6 +53,7 @@ nodejs --version
 * flask
 * flask-sqlalchemy
 * flask-migrate
+* Environs
 * moment
 * pytest
 * WebTest
@@ -60,6 +61,7 @@ nodejs --version
 
 Flask-SQLAlchemy is the ORM.
 Flask-Migrate will manage migrations and schema changes.
+Environs is used for setting environment variables.
 Moment is a nice library for handling dates.
 Pytest, WebTest, and FactoryBoy are already packages used for testing.
 
@@ -71,6 +73,19 @@ cat testdb.sql | sqlite3 test.db
 ```
 
 ### Managing settings
+The .env file included is meant for dev purposes only, and should not be used on a production server. The settings specifed in this file will be read in settings.py and passed to the flask application. If an app is not specified in the .env file, the appropriate default will be used the settings.py.
+
+| var | description |
+| -- | -- |
+|FLASK_APP| (required) Specifies the file running the flask server|
+|FLASK_ENV| (required; default=production) Specifies the environment (development or production)|
+|DATABASE_URL| (optional; default=sqlite db named happy.db in your current working dir) By default, this app will use a sqlite db when running locally. You can install postgres or another db compatible with SQLAlchemy |
+|DATE_FORMAT| (optional; default="ddd, MM-DD-YYYY") Specifies the date format used to display the dates in the API and on the front-end
+
+
+
+
+
 
 ## Run the Application
 
