@@ -29,13 +29,52 @@ nodejs --version
 1. Clone this repository.
 2. Create a virtual environment.
 3. Install the dependencies.
-  a. Install the frontend dependencies using node package manager
+    * Install the frontend dependencies using node package manager
+      ```
+      cd frontend
+      npm install
+      ```
+ 
+    * Install the backend dependencies using pip
+
+      ```
+      cd backend
+      pip install -r requirements.txt
+      ```
+
+**Top-level dependencies**
+* flask
+* flask-sqlalchemy
+* flask-migrate
+* moment
+* pytest
+* WebTest
+* factory_boy
+
+Flask-SQLAlchemy is the ORM.
+Flask-Migrate will manage migrations and schema changes.
+Moment is a nice library for handling dates.
+Pytest, WebTest, and FactoryBoy are already packages used for testing.
+
+## Run the Application
+
+To run the application, start the front-end client and the backend REST server. (I'm not using webpack or a similar tool, for now, I'm just starting each piece manually in two separate terminals.)
+
+**To start the frontend**
 ```
 cd frontend
-npm install
+npm start
 ```
-  b. Install the backend dependencies using pip
+
+**To start the backend**
 ```
 cd backend
-pip install -r requirements.txt
+./run.sh
 ```
+
+Navigate to your localhost and view the app.
+
+## Testing
+
+
+
