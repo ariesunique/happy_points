@@ -4,6 +4,13 @@ The initial aim of this project was to implement a rewards system for my daughte
 
 The front-end is written in React (javascript) and the backend is written as a Flask (python) RESTful API.
 
+- [Installation](#installation)
+  * [Prerequisites](#prerequisites)
+  * [Setting up Happy Points](#setting-up-happy-points)
+- [Run the Application](#run-the-application)
+- [Testing](#testing)
+
+
 ## Installation
 
 Make sure you have python (and pip) installed on your system. Make sure you have node (and npm) installed on your system.
@@ -25,7 +32,7 @@ To verify node installation:
 nodejs --version
 ```
 
-### Setting up Happy Points
+### Install Happy Points
 1. Clone this repository.
 2. Create a virtual environment.
 3. Install the dependencies.
@@ -42,7 +49,7 @@ nodejs --version
       pip install -r requirements.txt
       ```
 
-**Top-level dependencies**
+**Top-level dependencies for the backend server**
 * flask
 * flask-sqlalchemy
 * flask-migrate
@@ -55,6 +62,15 @@ Flask-SQLAlchemy is the ORM.
 Flask-Migrate will manage migrations and schema changes.
 Moment is a nice library for handling dates.
 Pytest, WebTest, and FactoryBoy are already packages used for testing.
+
+*Optional Database Setup*
+When you run the app for the first time, you will see a blank screen. You can add entries. If you would like to seed the app with some initial data, there is a testdb script provided.
+```
+cd backend/happy_points
+cat testdb.sql | sqlite3 test.db
+```
+
+### Managing settings
 
 ## Run the Application
 
