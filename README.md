@@ -103,9 +103,19 @@ cd backend
 ./run.sh
 ```
 
+The run script is provided for convenience. It starts the flask server on port 5000 because your front end application will be running on port 3000 (the default port used by node).
+
 Navigate to your localhost and view the app.
 
 ## Testing
 
+The test cases are located in the /tests dir.
+
+To run the test cases:
+```
+cd tests
+cat testdb.sql | sqlite3 test.db
+pytest
+```
 
 
