@@ -108,7 +108,11 @@ cd {happy-points-install-dir}/backend
 
 The run script is provided for convenience. It starts the flask server on port 5000 because your front end application will be running on port 3000 (the default port used by node).
 
-Navigate to your localhost and view the app. You will see an 
+Navigate to your localhost and view the app. It should look like below:
+
+![alt text](https://github.com/ariesunique/happy_points/docs/images/happy-points-initial-screenshot.png "Happy Points Application")
+
+
 
 ## Testing
 
