@@ -4,6 +4,9 @@ The initial aim of this project was to implement a rewards system for my daughte
 
 The front-end is written in React (javascript) and the backend is written as a Flask (python) RESTful API.
 
+![alt text](https://github.com/ariesunique/happy_points/blob/master/docs/images/happy-points-with-data-820x461.png "Happy Points Application")
+
+
 - [Installation](#installation)
   * [Prerequisites](#prerequisites)
   * [Install Happy Points](#install-happy-points)
