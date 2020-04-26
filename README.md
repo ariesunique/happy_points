@@ -69,6 +69,7 @@ sudo apt install sqlite3
       * factory_boy -- helps create mock objects for testing
 
 4. Set up the database 
+   This script will create the main table needed for the application. If you want to populate the table with test data, open testdb.sql and uncomment the sql statements.
    ```
    cd {happy-points-install-dir}/backend/happy_points
    cat testdb.sql | sqlite3 happy.db
