@@ -110,7 +110,7 @@ The run script is provided for convenience. It starts the flask server on port 5
 
 Navigate to your localhost and view the app. It should look like below:
 
-![alt text](https://github.com/ariesunique/happy_points/docs/images/happy-points-initial-screenshot.png "Happy Points Application")
+![alt text](https://github.com/ariesunique/happy_points/blob/master/docs/images/happy-points-initial-screenshot.png "Happy Points Application")
 
 
 
