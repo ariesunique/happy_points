@@ -17,13 +17,14 @@ common_notes = ["listening the first time",
 class PointFactory(SQLAlchemyModelFactory):
     class Meta:
         sqlalchemy_session = _db.session
+        sqlalchemy_session_persistence = "commit"
         model = Point
         
-    print("getting new point ================!!!!!!!!!!!!!!!")
     happy = random.randint(1, 3)
     sad = random.randint(1,3)
     notes = []
     for _ in range(random.randint(0,2)):
         notes.append(random.choice(common_notes))
+    notes = ";".join(notes)
         
     

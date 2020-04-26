@@ -13,9 +13,9 @@ def hello_world():
 @blueprint.route("/points")
 def get_points():
     DATE_FORMAT = current_app.config["DATE_FORMAT"]
-    page = int(request.args.get("page", 1))
-    
-    
+    page = int(request.args.get("page", 1))    
+    points = []    
+    total = 0
     # query for a week's worth of data (ie, each page on the UI will show one week of data from Mon to Sat)
     # if user requested page 1, roll back to the previous Monday and show data within date range Mon to current
     # if user request page greater than 1, roll back the appropriate number of weeks
@@ -23,22 +23,26 @@ def get_points():
     # first get latest date in the database and rollback from that date (instead of rolling back from current date
     #      which could result in a lot of empty pages if data was not entered consistently for each day)
     
+    
     latest_entry = Point.query.order_by(Point.timestamp.desc()).first()
     earliest_entry = Point.query.order_by(Point.timestamp.asc()).first()
 
-    start_date = moment.date(latest_entry.timestamp).replace(weekday=1).subtract(week=page-1)
-    end_date = start_date.clone().add(days=6)
-            
-    points = [ point.to_dict() for point in Point.query.filter(Point.timestamp.between(start_date.date, end_date.date)).order_by(Point.timestamp.desc()).all() ]
+    if latest_entry:
+        start_date = moment.date(latest_entry.timestamp).replace(weekday=1).subtract(week=page-1)
+        end_date = start_date.clone().add(days=6)
+
+        points_from_db = Point.query.filter(Point.timestamp.between(start_date.date, end_date.date)).order_by(Point.timestamp.desc()).all()
+        points = [ point.to_dict() for point in points_from_db ]
+        total = sum( point.total for point in points_from_db )
         
     meta = {
         "current_page": request.url , 
-        "prev_page": f"{request.url}?page={page-1}" if page > 1 else "",
-        "next_page": f"{request.url}?page={page+1}" if earliest_entry.timestamp < start_date.date else ""
+        "prev_page": "/points?page={page-1}" if page > 1 else "",
+        "next_page": "/points?page={page+1}" if earliest_entry and start_date and earliest_entry.timestamp < start_date.date else ""
     }
     return jsonify({"success": True,
                     "currentDate": moment.now().format(DATE_FORMAT),
-                    "totalPoints": sum( point.get("totalPoints") for point in points ),
+                    "totalPoints": total,
                     "points": points,
                     "meta": meta
                    })
@@ -46,9 +50,9 @@ def get_points():
 @blueprint.route("/points", methods=["POST"])
 def add_points():
 
-    happy_val = request.get_json().get("happy")
-    sad_val = request.get_json().get("sad")
-    notes_val = request.get_json().get("notes")    
+    happy_val = request.get_json().get("happy", 0)
+    sad_val = request.get_json().get("sad", 0)
+    notes_val = request.get_json().get("notes", "")    
     
     # get the entry for the current date and update it
     start = moment.now().zero.date
@@ -65,5 +69,6 @@ def add_points():
     todays_point.save()
     
 
-
-    return jsonify({"success": True})
+    return jsonify({"success": True,
+                    "point": todays_point.to_dict()
+                   })

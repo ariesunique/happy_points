@@ -1,6 +1,7 @@
 import os
 import tempfile
 import datetime as dt
+import moment
 import random
 
 import pytest
@@ -46,15 +47,10 @@ def db(app):
     
 
 # ----- API Tests ------ #
-
-def test_hello_world(client):
-    rv = client.get("/")
-    print(rv)
-    assert rv.status_code == 200
-    assert 'Hello World' in rv.text
     
     
-def test_get_points(client, db):
+@pytest.mark.api    
+def test_get_points_empty_db(client, db):
     """Get all the points via the api"""
     resp = client.get("/points")
     assert resp.status_code == 200
@@ -63,9 +59,120 @@ def test_get_points(client, db):
     assert payload.get("points") != None
    
     points = payload.get("points")
-    print(resp)
-    assert len(points) == 3
+    assert len(points) == 0
     
+    
+@pytest.mark.api  
+def test_get_points(client, db):
+    """Get all the points via the api"""
+    # first add data points to the db so there is something to retrieve
+    successfully_added_data = (point.save() for point in PointFactory.create_batch(size=5))    
+    
+    resp = client.get("/points")
+    assert resp.status_code == 200
+    payload = resp.json
+    assert payload.get("success")
+    assert payload.get("points") != None
+   
+    points = payload.get("points")
+    assert len(points) == 5
+    
+    
+@pytest.mark.api       
+def test_create_point(client, db):
+    """Create a new entry via the api"""
+    HAPPY = 100
+    SAD = 20
+    MSG = "Very good"
+    params = {"happy": HAPPY, "sad": SAD, "notes": MSG }   
+    resp = client.post_json("/points", params=params)
+    assert resp.status_code == 200
+    
+    # verify that the response contains the data that we sent
+    payload = resp.json
+    assert payload.get("success")
+    assert payload.get("point") != None    
+    assert payload.get("point").get("numHappy") == HAPPY
+    assert MSG in payload.get("point").get("notes")
+    
+    # verify that the new point is actually in the database
+    retrieved = Point.query.get(payload.get("point").get("id"))
+    assert retrieved 
+    assert retrieved.happy == HAPPY
+    assert retrieved.sad == SAD
+    assert retrieved.total == HAPPY - SAD
+    assert MSG in retrieved.notes
+                   
+        
+@pytest.mark.api   
+def test_update_with_some_parameters(client):
+    pass
+    
+
+@pytest.mark.api       
+def test_update_point(client, db):
+    # first add data points to the db so there is something to retrieve;
+    # point is added with a default current timestamp
+    point = Point(happy=5)
+    point.save()
+    
+    # use the api to update the entry with a timestamp from today
+    HAPPY = 95
+    params = {"happy": HAPPY }   
+    resp = client.post_json("/points", params=params)
+    
+    # check that our point now has 100 happy faces
+    assert point.happy == 100
+
+
+@pytest.mark.api
+def test_api_error(client, db):
+    pass
+
+
+@pytest.mark.api
+def test_paging(client, db):
+    # add 8 days worth of data from Sun Apr 19, 2020 - Sun Apr 26, 2020
+    # get current date and set to prev Sun (week starts on Monday)
+    # this way, with 8 days of data, we will get a full week on one page, 
+    #    and one overflow date on page 2
+    sunday = moment.date(2020, 4, 26)
+    for i in range (8):
+        prev = sunday.clone().subtract(days=i)
+        point = Point(happy=5)
+        point.timestamp = prev.date
+        point.save()
+        
+    assert len(Point.query.all()) == 8, "Data loaded incorrectly"
+    
+    # get first page of data
+    resp = client.get("/points")
+    print(resp)
+    assert resp.status_code == 200
+    assert resp.json.get("success")
+    assert resp.json.get("points") != None
+    assert resp.json.get("meta").get("next_page")
+   
+    points = resp.json.get("points")
+    assert len(points) == 7
+    
+    # get the next page of data
+    resp = client.get("/points?page=2")
+    assert len(resp.json.get("points")) == 1
+    assert "04-19-2020" in resp.json.get("points")[0].get("date")
+    
+
+@pytest.mark.api
+def test_paging_nonconsecutive_dates(client, db):
+    pass
+
+
+@pytest.mark.api
+def test_paging_old_weekold_entries(client, db):
+    pass
+
+
+
 
 def test_factory(db):
     point = PointFactory()
@@ -82,7 +189,9 @@ def test_batch_factories(db):
     
 # ----- DB Tests ------ #
 
+@pytest.mark.db
 def test_create_point_with_db_defaults(db):
+    """Ensure that a new Point entry in the database has the correct default values"""
     point = Point()
     point.save()
     assert point.id, "the object should have an id if successfully saved in the db"
@@ -96,20 +205,26 @@ def test_create_point_with_db_defaults(db):
     assert point.sad == 0, "sad column should be initialized to 0"
     assert point.total == 0, "total column should be initialized to 0"
     
-    
+
+@pytest.mark.db
 def test_create_point_with_automatic_total(db):
+    """Ensure that the total column is correctly set to the difference between happy and sad"""
     point = Point(happy=5, sad=3)
     point.save()
     assert point.total == 2, "total column should be set to the value of happy - sad"
     
-    
+
+@pytest.mark.db
 def test_total_is_not_created_negative(db):
+    """Ensure that the total column is never a negative number, even if there are more sad faces than happy"""
     point = Point(happy=1, sad=5)
     point.save()
     assert point.total == 0, "total column should never be negative"
     
-    
+
+@pytest.mark.db
 def test_update_point(db):
+    """Ensure that we can update a database entry"""
     point = Point()
     point.save()
     

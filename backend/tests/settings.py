@@ -9,6 +9,7 @@ ENV = "development"
 TESTING = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test.db')
 SECRET_KEY = "not-so-secret-in-tests"
+DATE_FORMAT = "ddd, MM-DD-YYYY"
 BCRYPT_LOG_ROUNDS = (
     4  # For faster tests; needs at least 4 to avoid "ValueError: Invalid rounds"
 )
