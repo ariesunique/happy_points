@@ -4,6 +4,13 @@ The initial aim of this project was to implement a rewards system for my daughte
 
 The front-end is written in React (javascript) and the backend is written as a Flask (python) RESTful API.
 
+- [Installation](#installation)
+  * [Prerequisites](#prerequisites)
+  * [Install Happy Points](#install-happy-points)
+  * [Managing settings](#managing-settings)
+- [Run the Application](#run-the-application)
+- [Testing](#testing)
+
 ## Installation
 
 Make sure you have python (and pip) installed on your system. Make sure you have node (and npm) installed on your system.
@@ -25,7 +32,7 @@ To verify node installation:
 nodejs --version
 ```
 
-### Setting up Happy Points
+### Install Happy Points
 1. Clone this repository.
 2. Create a virtual environment.
 3. Install the dependencies.
@@ -42,10 +49,11 @@ nodejs --version
       pip install -r requirements.txt
       ```
 
-**Top-level dependencies**
+**Top-level dependencies for the backend server**
 * flask
 * flask-sqlalchemy
 * flask-migrate
+* Environs
 * moment
 * pytest
 * WebTest
@@ -53,8 +61,31 @@ nodejs --version
 
 Flask-SQLAlchemy is the ORM.
 Flask-Migrate will manage migrations and schema changes.
+Environs is used for setting environment variables.
 Moment is a nice library for handling dates.
 Pytest, WebTest, and FactoryBoy are already packages used for testing.
+
+*Optional Database Setup*
+When you run the app for the first time, you will see a blank screen. You can add entries. If you would like to seed the app with some initial data, there is a testdb script provided.
+```
+cd backend/happy_points
+cat testdb.sql | sqlite3 test.db
+```
+
+### Managing settings
+The .env file included is meant for dev purposes only, and should not be used on a production server. The settings specifed in this file will be read in settings.py and passed to the flask application. If an app is not specified in the .env file, the appropriate default will be used the settings.py.
+
+| var | description |
+| -- | -- |
+|FLASK_APP| (required) Specifies the file running the flask server|
+|FLASK_ENV| (required; default=production) Specifies the environment (development or production)|
+|DATABASE_URL| (optional; default=sqlite db named happy.db in your current working dir) By default, this app will use a sqlite db when running locally. You can install postgres or another db compatible with SQLAlchemy |
+|DATE_FORMAT| (optional; default="ddd, MM-DD-YYYY") Specifies the date format used to display the dates in the API and on the front-end
+
+
+
+
+
 
 ## Run the Application
 
@@ -72,9 +103,19 @@ cd backend
 ./run.sh
 ```
 
+The run script is provided for convenience. It starts the flask server on port 5000 because your front end application will be running on port 3000 (the default port used by node).
+
 Navigate to your localhost and view the app.
 
 ## Testing
 
+The test cases are located in the /tests dir.
+
+To run the test cases:
+```
+cd tests
+cat testdb.sql | sqlite3 test.db
+pytest
+```
 
 
